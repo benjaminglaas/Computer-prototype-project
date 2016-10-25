@@ -35,7 +35,6 @@ public class CameraController : MonoBehaviour {
 			targetRotation *= Quaternion.AngleAxis(angle, new Vector3 (0, 0, 1));
 			gravityDirection = gravityDirectionList [orientation];
 			Physics.gravity = gravityDirection;
-			print (Physics.gravity);
 		}
 		if (Input.GetKeyDown (KeyCode.A)) {
 			if (orientation <= 0) {
@@ -47,8 +46,6 @@ public class CameraController : MonoBehaviour {
 			targetRotation *= Quaternion.AngleAxis(-angle, new Vector3 (0, 0, 1));
 			gravityDirection = gravityDirectionList [orientation];
 			Physics.gravity = gravityDirection;
-			print (Physics.gravity);
-
 		}
 		transform.rotation = Quaternion.Lerp (transform.rotation, targetRotation, 10 * smooth * Time.deltaTime);
 	}
