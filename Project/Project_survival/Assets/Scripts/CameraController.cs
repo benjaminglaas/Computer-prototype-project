@@ -9,9 +9,9 @@ public class CameraController : MonoBehaviour {
 
 	float angle = 90.0f;
 	int orientation = 0;
-	Vector3[] gravityDirectionList = new Vector3[4]{new Vector3 (0, -1, 0),new Vector3(1,0,0),new Vector3(0,1,0),new Vector3(-1,0,1)}; 
+	Vector2[] gravityDirectionList = new Vector2[4]{new Vector2(0, -1),new Vector2(1,0),new Vector2(0,1),new Vector2(-1,0)}; 
 	Quaternion targetRotation; 
-	Vector3 gravityDirection;
+	public static Vector2 gravityDirection;
 
 
 
@@ -19,8 +19,8 @@ public class CameraController : MonoBehaviour {
 	//Vector3 gravityDirection;
 	void Start () {
 		targetRotation = transform.rotation;
-		gravityDirection = gravityDirectionList [0];
-		Physics.gravity = gravityDirection;
+		gravityDirection = gravityDirectionList [orientation];
+		Physics2D.gravity = gravityDirection;
 	}
 	
 	// Update is called once per frame
@@ -34,7 +34,7 @@ public class CameraController : MonoBehaviour {
 			};
 			targetRotation *= Quaternion.AngleAxis(angle, new Vector3 (0, 0, 1));
 			gravityDirection = gravityDirectionList [orientation];
-			Physics.gravity = gravityDirection;
+			Physics2D.gravity = gravityDirection;
 		}
 		if (Input.GetKeyDown (KeyCode.A)) {
 			if (orientation <= 0) {
@@ -45,7 +45,7 @@ public class CameraController : MonoBehaviour {
 			};
 			targetRotation *= Quaternion.AngleAxis(-angle, new Vector3 (0, 0, 1));
 			gravityDirection = gravityDirectionList [orientation];
-			Physics.gravity = gravityDirection;
+			Physics2D.gravity = gravityDirection;
 		}
 		transform.rotation = Quaternion.Lerp (transform.rotation, targetRotation, 10 * smooth * Time.deltaTime);
 	}
