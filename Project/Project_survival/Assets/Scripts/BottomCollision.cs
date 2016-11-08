@@ -22,8 +22,6 @@ public class BottomCollision : MonoBehaviour {
 			PlayerController.jumping = false;
 			rb.gravityScale = 0.0f;
 			rb.velocity = Vector3.zero;
-			print ("Trigger entered");
-
 		}
 
 	}
