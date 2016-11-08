@@ -1,11 +1,11 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\SideCollision.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\BottomCollision.cs">
     <Files>
-      <File FileName="Assets\Scripts\CameraController.cs" Line="45" Column="6" />
-      <File FileName="Assets\Scripts\PlayerController.cs" Line="46" Column="38" />
-      <File FileName="Assets\Scripts\BottomCollision.cs" Line="38" Column="35" />
-      <File FileName="Assets\Scripts\SideCollision.cs" Line="50" Column="21" />
+      <File FileName="Assets\Scripts\CameraController.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\PlayerController.cs" Line="72" Column="2" />
+      <File FileName="Assets\Scripts\BottomCollision.cs" Line="24" Column="31" />
+      <File FileName="Assets\Scripts\SideCollision.cs" Line="26" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
