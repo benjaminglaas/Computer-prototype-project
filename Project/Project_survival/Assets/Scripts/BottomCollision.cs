@@ -16,7 +16,8 @@ public class BottomCollision : MonoBehaviour {
 		rb.gravityScale = gravityScale;
 	}
 
-	void OnTriggerEnter2D(Collider2D other){
+
+    void OnTriggerEnter2D(Collider2D other){
 		
 		if (other.gameObject.tag == "Ground") {	
 			PlayerController.jumping = false;

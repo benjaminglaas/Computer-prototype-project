@@ -20,7 +20,9 @@ public class SideCollision : MonoBehaviour {
 
 	}
 
-	void OnTriggerEnter2D(Collider2D other){
+
+
+    void OnTriggerEnter2D(Collider2D other){
 
 		if (other.gameObject.tag == "Ground") {	
 			PlayerController.jumping = true;
