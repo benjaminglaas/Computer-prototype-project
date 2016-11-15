@@ -14,28 +14,24 @@ public class BottomCollision : MonoBehaviour {
 		player = GameObject.FindGameObjectWithTag ("Player");
 		rb = player.GetComponent<Rigidbody2D>(); 
 		rb.gravityScale = gravityScale;
+
 	}
 
 
     void OnTriggerEnter2D(Collider2D other){
 		
 		if (other.gameObject.tag == "Ground") {	
-			PlayerController.jumping = false;
+			//PlayerController.jumping = false;
 			rb.gravityScale = 0.0f;
 			rb.velocity = Vector3.zero;
+			//print (PlayerController.jumping);
 		}
 
-	}
-	void OnTriggerStay2D(Collider2D other){
-		if (other.gameObject.tag == "Ground") {	
-			PlayerController.jumping = false;
-		}
 	}
 
 	void OnTriggerExit2D(Collider2D other){
 		if (other.gameObject.tag == "Ground") {
-			PlayerController.jumping = true;
-			rb.gravityScale = gravityScale;
-		}
+			//PlayerController.jumping = true;
+			rb.gravityScale = gravityScale;		}
 	}	
 }

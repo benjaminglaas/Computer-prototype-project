@@ -25,7 +25,7 @@ public class SideCollision : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D other){
 
 		if (other.gameObject.tag == "Ground") {	
-			PlayerController.jumping = true;
+			//PlayerController.jumping = true;
 			rb.gravityScale = gravityScale;
 			rb.AddForce (-directionJumpList [PlayerController.orientationPlayer] * Time.deltaTime);
 		}
@@ -34,7 +34,7 @@ public class SideCollision : MonoBehaviour {
 	void OnTriggerStay2D(Collider2D other){
 		
 		if (other.gameObject.tag == "Ground") {	
-			PlayerController.jumping = true;
+			//PlayerController.jumping = true;
 			rb.AddForce (-directionJumpList [PlayerController.orientationPlayer] * Time.deltaTime);
 
 		}
@@ -43,7 +43,7 @@ public class SideCollision : MonoBehaviour {
 	void OnTriggerExit2D(Collider2D other){
 		
 		if (other.gameObject.tag == "Ground") {
-			PlayerController.jumping = true;
+			//PlayerController.jumping = true;
 			rb.gravityScale = gravityScale;
 			rb.AddForce (-directionJumpList [PlayerController.orientationPlayer] * Time.deltaTime);
 		}

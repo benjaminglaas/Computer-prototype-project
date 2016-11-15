@@ -6,7 +6,9 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 
 	public float jumpSpeed = 10.0f;
-	public float speed = 10.0f;
+	public float moveForce = 365.0f;
+	public float maxSpeed = 5.0f;
+
 	public Text scoreText;
 	public Text deadText;
 	public Text restartText;
@@ -15,7 +17,7 @@ public class PlayerController : MonoBehaviour {
 
 	[HideInInspector] public static Rigidbody2D rb;
 	[HideInInspector] public static float gravityScale = 15.0f;
-	[HideInInspector] public static bool jumping;
+	[HideInInspector] public static bool grounded;
 	[HideInInspector] public static bool canTurn;
 	[HideInInspector] public static Vector3[] directionJumpList = new Vector3[4]{new Vector3(0,1,0),new Vector3(-1,0,0),new Vector3(0,-1,0),new Vector3(1,0,0)}; 
 	[HideInInspector] public static int orientationPlayer;
@@ -25,6 +27,8 @@ public class PlayerController : MonoBehaviour {
 	float angle = 90.0f;
 	float turnTimer;
 	float score;
+	bool jump;
+	Transform groundCheck;
 
 	Vector3[] directionPlayerList = new Vector3[4]{new Vector3(1,0,0),new Vector3(0,1,0),new Vector3(-1,0,0),new Vector3(0,-1,0)}; 
 	Quaternion targetRotation; 
@@ -32,6 +36,7 @@ public class PlayerController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		groundCheck = transform.Find ("groundCheck");
 		targetRotation = transform.rotation;
 		rb = GetComponent<Rigidbody2D> (); 
 		rb.gravityScale = gravityScale;
@@ -43,14 +48,14 @@ public class PlayerController : MonoBehaviour {
 		orientationPlayer = 0;
 		turnTimer = 2.0f;
 		canTurn = true;
-		jumping = true;
+		grounded = false;
 	}
 
 	// Update is called once per frame
 	void Update () {
 		score = Time.timeSinceLevelLoad * 10;
 		if (score < 10) {
-			scoreText.text = string.Format ("Score: {0:0}", Time.timeSinceLevelLoad * 10);
+			scoreText.text = string.Format ("Score: {0:0}", Time.timeSinceLevelLoad * 10); 
 		} else {
 			scoreText.text = string.Format ("Score: {0:00}", Time.timeSinceLevelLoad * 10);
 
@@ -83,7 +88,7 @@ public class PlayerController : MonoBehaviour {
 			targetRotation *= Quaternion.AngleAxis(angle, new Vector3 (0, 0, 1));
 			rb.velocity = Vector2.zero;
 			rb.gravityScale = gravityScale;
-			jumping = true;
+			grounded = false;
 			canTurn = false;
 
 		}
@@ -97,55 +102,74 @@ public class PlayerController : MonoBehaviour {
 			targetRotation *= Quaternion.AngleAxis(-angle, new Vector3 (0, 0, 1));
 			rb.velocity = Vector2.zero;
 			rb.gravityScale = gravityScale;
-			jumping = true;
+			grounded = false;
 			canTurn = false;
 		}
 
-		if (Input.GetKey (KeyCode.LeftArrow)) {
-			transform.position -= directionPlayerList [orientationPlayer] * Time.deltaTime * moveSpeed;
-		}
+		// The player is grounded if a linecast to the groundcheck position hits anything on the ground layer.
+		grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));  
 
-		if (Input.GetKey (KeyCode.RightArrow)) {
-			transform.position += directionPlayerList [orientationPlayer] * Time.deltaTime * moveSpeed;
-		}
-		if (Input.GetKey (KeyCode.UpArrow) && !jumping) {
-			Jump ();
+		// If the jump button is pressed and the player is grounded then the player should jump.
+		if (Input.GetKey (KeyCode.UpArrow) && grounded) {
+			jump = true;
 		}
 		transform.rotation = Quaternion.Lerp (transform.rotation, targetRotation, 10 * smooth * Time.deltaTime);
 	}
 
+	void FixedUpdate(){
+		float h = Input.GetAxis ("Horizontal");
 
-    void Jump(){
-		rb.AddForce (directionJumpList [orientationPlayer] * Time.deltaTime * jumpSpeed);
-		jumping = true;
-		rb.gravityScale = gravityScale;
+		if (orientationPlayer == 0){
+			if (h * rb.velocity.x < maxSpeed) {
+				rb.AddForce (Vector2.right * h * moveForce);
+			}
+			if (Mathf.Abs (rb.velocity.x) > maxSpeed) {
+				rb.velocity = new Vector2 (Mathf.Sign (rb.velocity.x) * maxSpeed, rb.velocity.y);
+			}
+		}
+		else if (orientationPlayer == 1){
+			if (h * rb.velocity.y < maxSpeed) {
+				rb.AddForce (Vector2.up * h * moveForce);
+			}
+			if (Mathf.Abs (rb.velocity.y) > maxSpeed) {
+				rb.velocity = new Vector2 (rb.velocity.x, Mathf.Sign (rb.velocity.y) * maxSpeed);
+			}
+		}
+		else if (orientationPlayer == 2){
+			if (h * rb.velocity.x < maxSpeed) {
+				rb.AddForce (Vector2.left * h * moveForce);
+			}
+			if (Mathf.Abs (rb.velocity.x) > maxSpeed) {
+				rb.velocity = new Vector2 (Mathf.Sign (rb.velocity.x) * maxSpeed, rb.velocity.y);
+			}
+		}
+		else if (orientationPlayer == 3){
+			if (h * rb.velocity.y < maxSpeed) {
+				rb.AddForce (Vector2.down * h * moveForce);
+			}
+
+			if (Mathf.Abs (rb.velocity.y) > maxSpeed) {
+				rb.velocity = new Vector2 (rb.velocity.x, Mathf.Sign (rb.velocity.y) * maxSpeed);
+			}
+		}
+
+		if (jump) {
+
+			rb.AddForce (directionJumpList [orientationPlayer] * Time.deltaTime * jumpSpeed);
+			jump = false;
+		}
+
 	}
 
 	bool checkBounds(int orientation){
-		if (orientation == 0) {
-			if (transform.position.y < -4.5) {
-				return true;
-			} else {
-				return false;
-			}
-		} else if (orientation == 1) {
-			if (transform.position.x > 4.5) {
-				return true;
-			} else {
-				return false;
-			}
-		} else if (orientation == 2) {
-			if (transform.position.y > 4.5) {
-				return true;
-			} else {
-				return false;
-			}
-		} else if (orientation == 3){
-			if (transform.position.x < -4.5) {
-				return true;
-			} else {
-				return false;
-			}
+		if (transform.position.y < -4.5) {
+			return true;
+		} else if (transform.position.x > 4.5) {
+			return true;
+		} else if (transform.position.y > 4.5) {
+			return true;
+		} else if (transform.position.x < -4.5) {
+			return true;
 		} else{
 			return false;
 			}
