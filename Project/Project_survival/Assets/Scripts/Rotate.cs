@@ -7,7 +7,7 @@ public class Rotate : MonoBehaviour {
 
     void Start()
     {
-        GetComponent<Rigidbody>().angularVelocity = Random.insideUnitSphere * tumble;
+       // GetComponent<Rigidbody2D>().angularVelocity = Random.insideUnitSphere * tumble;
     }
 
 }

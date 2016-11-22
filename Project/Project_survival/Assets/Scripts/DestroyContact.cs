@@ -4,13 +4,12 @@ using System.Collections;
 public class DestroyContact : MonoBehaviour {
 
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "Boundary")
-        {
-            return;
-        }
-        Destroy(other.gameObject);
-        Destroy(gameObject);
+		print ("Collision with boundary");
+		if (other.tag == "Boundary") {
+			return;
+		}
+        
     }
 }

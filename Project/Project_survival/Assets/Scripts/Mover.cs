@@ -5,12 +5,12 @@ public class Mover : MonoBehaviour {
 
     public float speed;
 
-    private Rigidbody rb;
+    private Rigidbody2D rb;
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        rb.velocity -= transform.up * speed;
+        rb = GetComponent<Rigidbody2D>();
+		rb.velocity -= Vector2.up * speed;
     }
 
 }

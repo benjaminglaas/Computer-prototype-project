@@ -32,7 +32,8 @@ public class PlayerController : MonoBehaviour {
 
 	Vector3[] directionPlayerList = new Vector3[4]{new Vector3(1,0,0),new Vector3(0,1,0),new Vector3(-1,0,0),new Vector3(0,-1,0)}; 
 	Quaternion targetRotation; 
-	bool dead;
+	public static bool dead;
+	bool outOfBounds;
 
 	// Use this for initialization
 	void Start () {
@@ -49,6 +50,7 @@ public class PlayerController : MonoBehaviour {
 		turnTimer = 2.0f;
 		canTurn = true;
 		grounded = false;
+		outOfBounds = false;
 	}
 
 	// Update is called once per frame
@@ -65,14 +67,19 @@ public class PlayerController : MonoBehaviour {
 			canTurn = true;
 			turnTimer = 2.0f;
 		}
-
-		if (checkBounds(orientationPlayer)) {
+		outOfBounds = checkBounds (orientationPlayer);
+		if (outOfBounds) {
 			dead = true;
+		}
+
+		if (dead) {
 			Time.timeScale = 0;
 			deadText.enabled = true;
 			restartText.enabled = true;
 			blocks.SetActive (false);
 		}
+
+
 
 		if (Input.GetKeyDown (KeyCode.R) && dead) {
 			SceneManager.LoadScene ("scenelayout",LoadSceneMode.Single);
@@ -108,7 +115,6 @@ public class PlayerController : MonoBehaviour {
 
 		// The player is grounded if a linecast to the groundcheck position hits anything on the ground layer.
 		grounded = Physics2D.Linecast(transform.position, groundCheck.position, 1 << LayerMask.NameToLayer("Ground"));  
-
 		// If the jump button is pressed and the player is grounded then the player should jump.
 		if (Input.GetKey (KeyCode.UpArrow) && grounded) {
 			jump = true;
@@ -118,7 +124,7 @@ public class PlayerController : MonoBehaviour {
 
 	void FixedUpdate(){
 		float h = Input.GetAxis ("Horizontal");
-		if (Mathf.Abs(h) < 0.01f && grounded) {
+		if (Mathf.Abs(h) < 0.01f) {
 			if (orientationPlayer == 0) {
 				rb.velocity = new Vector2 (0, rb.velocity.y);
 			} else if (orientationPlayer == 1) {
@@ -172,17 +178,19 @@ public class PlayerController : MonoBehaviour {
 
 	}
 
+
 	bool checkBounds(int orientation){
-		if (transform.position.y < -4.5) {
+		if (transform.position.y < -4.3) {
 			return true;
-		} else if (transform.position.x > 4.5) {
+		} else if (transform.position.x > 4.3) {
 			return true;
-		} else if (transform.position.y > 4.5) {
+		} else if (transform.position.y > 4.3) {
 			return true;
-		} else if (transform.position.x < -4.5) {
+		} else if (transform.position.x < -4.3) {
 			return true;
 		} else{
 			return false;
 			}
 	}
+
 }
