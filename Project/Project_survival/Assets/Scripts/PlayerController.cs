@@ -118,40 +118,51 @@ public class PlayerController : MonoBehaviour {
 
 	void FixedUpdate(){
 		float h = Input.GetAxis ("Horizontal");
-
-		if (orientationPlayer == 0){
-			if (h * rb.velocity.x < maxSpeed) {
-				rb.AddForce (Vector2.right * h * moveForce);
-			}
-			if (Mathf.Abs (rb.velocity.x) > maxSpeed) {
-				rb.velocity = new Vector2 (Mathf.Sign (rb.velocity.x) * maxSpeed, rb.velocity.y);
-			}
-		}
-		else if (orientationPlayer == 1){
-			if (h * rb.velocity.y < maxSpeed) {
-				rb.AddForce (Vector2.up * h * moveForce);
-			}
-			if (Mathf.Abs (rb.velocity.y) > maxSpeed) {
-				rb.velocity = new Vector2 (rb.velocity.x, Mathf.Sign (rb.velocity.y) * maxSpeed);
-			}
-		}
-		else if (orientationPlayer == 2){
-			if (h * rb.velocity.x < maxSpeed) {
-				rb.AddForce (Vector2.left * h * moveForce);
-			}
-			if (Mathf.Abs (rb.velocity.x) > maxSpeed) {
-				rb.velocity = new Vector2 (Mathf.Sign (rb.velocity.x) * maxSpeed, rb.velocity.y);
-			}
-		}
-		else if (orientationPlayer == 3){
-			if (h * rb.velocity.y < maxSpeed) {
-				rb.AddForce (Vector2.down * h * moveForce);
+		if (Mathf.Abs(h) < 0.01f && grounded) {
+			if (orientationPlayer == 0) {
+				rb.velocity = new Vector2 (0, rb.velocity.y);
+			} else if (orientationPlayer == 1) {
+				rb.velocity = new Vector2 (rb.velocity.x, 0);
+			} else if (orientationPlayer == 2) {
+				rb.velocity = new Vector2 (0, rb.velocity.y);
+			} else if (orientationPlayer == 3) {
+				rb.velocity = new Vector2 (rb.velocity.x, 0);
 			}
 
-			if (Mathf.Abs (rb.velocity.y) > maxSpeed) {
-				rb.velocity = new Vector2 (rb.velocity.x, Mathf.Sign (rb.velocity.y) * maxSpeed);
+		} else {
+
+			if (orientationPlayer == 0) {
+				if (h * rb.velocity.x < maxSpeed) {
+					rb.AddForce (Vector2.right * h * moveForce);
+				}
+				if (Mathf.Abs (rb.velocity.x) > maxSpeed) {
+					rb.velocity = new Vector2 (Mathf.Sign (rb.velocity.x) * maxSpeed, rb.velocity.y);
+				}
+			} else if (orientationPlayer == 1) {
+				if (h * rb.velocity.y < maxSpeed) {
+					rb.AddForce (Vector2.up * h * moveForce);
+				}
+				if (Mathf.Abs (rb.velocity.y) > maxSpeed) {
+					rb.velocity = new Vector2 (rb.velocity.x, Mathf.Sign (rb.velocity.y) * maxSpeed);
+				}
+			} else if (orientationPlayer == 2) {
+				if (h * rb.velocity.x < maxSpeed) {
+					rb.AddForce (Vector2.left * h * moveForce);
+				}
+				if (Mathf.Abs (rb.velocity.x) > maxSpeed) {
+					rb.velocity = new Vector2 (Mathf.Sign (rb.velocity.x) * maxSpeed, rb.velocity.y);
+				}
+			} else if (orientationPlayer == 3) {
+				if (h * rb.velocity.y < maxSpeed) {
+					rb.AddForce (Vector2.down * h * moveForce);
+				}
+
+				if (Mathf.Abs (rb.velocity.y) > maxSpeed) {
+					rb.velocity = new Vector2 (rb.velocity.x, Mathf.Sign (rb.velocity.y) * maxSpeed);
+				}
 			}
 		}
+
 
 		if (jump) {
 
