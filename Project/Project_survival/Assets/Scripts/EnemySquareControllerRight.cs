@@ -17,7 +17,8 @@ public class EnemySquareControllerRight : MonoBehaviour {
     Quaternion targetRotation;
 
     // Use this for initialization
-    void Start () {
+    void Start ()  
+	{
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = gravityScale;
         Time.timeScale = 1;
@@ -26,7 +27,8 @@ public class EnemySquareControllerRight : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	void Update () 
+	{
         orientationEnemy = PlayerController.orientationPlayer;
 
         outOfBounds = checkBounds(orientationEnemy);

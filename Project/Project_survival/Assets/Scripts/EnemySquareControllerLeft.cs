@@ -1,16 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemySquareControllerLeft : MonoBehaviour
-{
+public class EnemySquareControllerLeft : MonoBehaviour{
 
     public float moveForce = 0.5f;
     public float maxSpeed = 1f;
 
-    [HideInInspector]
-    public static Rigidbody2D rb;
-    [HideInInspector]
-    public static float gravityScale = 15.0f;
+    [HideInInspector] public static Rigidbody2D rb;
+    [HideInInspector] public static float gravityScale = 15.0f;
 
     bool outOfBounds;
     int orientationEnemy;
@@ -20,7 +17,7 @@ public class EnemySquareControllerLeft : MonoBehaviour
     Quaternion targetRotation;
 
     // Use this for initialization
-    void Start()
+    void Start ()
     {
         rb = GetComponent<Rigidbody2D>();
         rb.gravityScale = gravityScale;
@@ -30,7 +27,7 @@ public class EnemySquareControllerLeft : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void Update () 
     {
         orientationEnemy = PlayerController.orientationPlayer;
 
